@@ -5,7 +5,7 @@
        Billing app.
     </description>
     <author email="support@phonegap.com" href="http://phonegap.com">
-        PhoneGap Team
+        Bizcatch Team Team
     </author>
     <content src="index.html" />
     <preference name="DisallowOverscroll" value="true" />
