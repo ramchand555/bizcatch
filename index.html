@@ -4,6 +4,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1">
 		<title>Bizcatch</title>
+		<link rel="stylesheet" href="css/index.css">
 		<link rel="stylesheet" href="themes/Bootstrap.css">
 		<link rel="stylesheet"  type="text/css" href="css/jquery.mobile.structure-1.4.0.min.css" />
 		<link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
@@ -32,26 +33,37 @@
 			</div>
 			
 			<div data-role="page" id="product" data-theme="c">
-					<script>
-						$( document ).ready(function() {
-						onDeviceReady();
-						Prod_select();
-						});
-					</script>
 				<div data-role="header" data-position="inline">
 					<a href="#home" data-icon="home"  data-theme="c"> </a>
 					<h1>Bizcatch</h1>
 					<a href="#addproduct" data-icon="plus"> </a>
 				</div>
+				
 				<div data-role="content" data-theme="a">
-					<form action="#" method="get">
-						<div data-role="fieldcontain">
-							<input type="search" name="password" id="search" value=""  />
-						</div>
-						<ul data-role="listview" id="prod_list_view" data-inset="true" data-divider-theme="c">
-							<li data-role="list-divider">Product </li>
+				<!--	<form action="#" method="get">			
+					<div data-role="fieldcontain">
+						<input id="filterBasic-input" data-type="search">
+					</div>
+					
+						<ul data-role="listview" id="prod_list_view"  data-divider-theme="c"  data-filter="true" data-input="#filterBasic-input" >
+							<li data-role="list-divider">Product</li>
 						</ul>
 					</form>
+					<script>
+						$( document ).ready(function() {
+						onDeviceReady();
+						Prod_select();
+						});
+			    </script> -->
+					
+							
+					<div data-role="fieldcontain">
+						<input id="filterBasic-input" data-type="search">
+					</div>
+						<ul data-role="listview" id="prod_list_view" data-divider-theme="c"  data-filter="true" data-input="#filterBasic-input" >
+							<li data-role="list-divider">Product</li>
+						</ul>
+					
 				</div>
 			</div>
 		
@@ -75,12 +87,13 @@
 					</div>
 					<div data-role="fieldcontainer">
 						<label for="unit">Unit:<em>* </em> </label>
-						<input type="text" name="unit" id="unit" />
+						<input type="text" name="unit" id="unit" />	
 					</div>
 					<div data-role="fieldcontainer">
 						<label for="price">Price:<em>* </em> </label>
 						<input type="text" name="price" id="price" />
 					</div>
+					<input type="hidden" name="p_id" id="p_id" />
 					<style>
 						label.error {
 									color: red;
@@ -89,10 +102,11 @@
 					</style>
 					<div class="ui-body">
 						<fieldset class="ui-grid-a">
-							<div class="ui-block-a"><button type="submit" data-theme="c">Cancel</button></div>
+							<div class="ui-block-a"><button type="reset" onclick="redirect('product');" data-theme="c">Cancel</button></div>
 							<div class="ui-block-b"><button type="submit" data-theme="c">Save</button></div>
 					    </fieldset>
 					</div>
+					<p class="status_msg"></p>
 					</form>
 					</div>
 			</div>
