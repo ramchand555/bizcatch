@@ -43,6 +43,19 @@ function edit(form,id)
 }
 
 
+function delete_prod(p_id)
+{
+	database.transaction(function(tx) {	
+		if(p_id === undefined ||  p_id === null ||  p_id === '')
+			console.log('Nothing to delete'+p_id );
+		else
+			console.log('prodcut Id deleted'+p_id );
+			tx.executeSql('delete from products where p_id=?', [p_id]);
+	}, function(error) {
+    console.log('Prodcut Id Transaction ERROR: ' + error.message);
+  });
+}
+
 function Prod_add_data(obj)
 {
 console.log(obj); 
@@ -77,7 +90,7 @@ function Prod_select()
 		$('ul#prod_list_view').html('<li data-role="list-divider">Product</li>');
         $.each(result.rows,function(index){
             var row = result.rows.item(index);
-            $('ul#prod_list_view').append('<li><a href="#" onclick="edit(\'product\','+row['p_id']+');"><h3 class="ui-li-heading">'+row['desc']+'</h3><p class="ui-li-desc">Code: '+row['code']+'      '+'Unit: '+row['unit']+'      '+'Price: '+row['price']+'</p></a></li>');
+            $('ul#prod_list_view').append('<li><a href="#" id="'+row['p_id']+'" onclick="edit(\'product\','+row['p_id']+');"><h3 class="ui-li-heading">'+row['desc']+'</h3><p class="ui-li-desc">Code: '+row['code']+'      '+'Unit: '+row['unit']+'      '+'Price: '+row['price']+'</p></a></li>');
         });
  
         $('ul#prod_list_view').listview('refresh');
