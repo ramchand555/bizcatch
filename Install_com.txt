@@ -1,0 +1,8 @@
+printer plugin
+
+https://github.com/srehanuddin/Cordova-Plugin-Bluetooth-Printer
+
+command:
+go to project folder and run below command in (Example location C:\opt\xampp\htdocs\bizcatch). It will be insalled in plugins directoy.
+
+phonegap cordova plugin add https://github.com/srehanuddin/Cordova-Plugin-Bluetooth-Printer.git --save
