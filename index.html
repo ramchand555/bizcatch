@@ -14,11 +14,43 @@
 		<script type="text/javascript" src="cordova.js"></script>
 		<script type="text/javascript" src="js/index.js"></script>
 		<script type="text/javascript" src="js/db.js"></script> 
+		<script type="text/javascript">
+		$(function(){
+		function camSuccess(imgData)
+		{
+		alert(imgData);
+		$("#img_camPH").attr("src",imgData);
+		}
+		function camError(error)
+		{
+		console.log(error);
+		}
+		function accessCamera()
+		{
+			var options={
+			destinatonType:Camera.DestinationType.FILE_URI,
+			sourceType:Camera.PictureSourceType.CAMERA
+			}
+			navigator.camera.getPicture(camSuccess,camError,options);
+		}
+		
+		$("#btn_camera").on('click',accessCamera);
+		
+			$( document ).ready(function() {
+			$("#btn_print").on('click',function(){
+			console.log("inside");
+			alert($("#print_area").val());
+			print_text($("#print_area").val());
+			});
+			});	
+		});
+		
+		</script>
 	</head>
 	<body>
-		<div class="app">
+		
 			<div data-role="page" id="home" data-theme="c">
-				<div data-role="header" data-position="inline">
+				<div data-role="header" data-position="fixed" data-tap-toggle="false" >
 					<a href="#home" data-icon="home"  data-theme="c"> </a>
 					<h1>Bizcatch</h1>
 					<a href="#home" data-icon="check"> </a>
@@ -30,10 +62,14 @@
 					<a href="#home" data-role="button" data-theme="c" data-icon="check">Report</a><br   />
 					<a href="#home" data-role="button" data-theme="c" data-icon="check">Settings</a><br/>
 				</div>
-			</div>
+<!-- 				<button id="btn_camera">Camera</button> -->
+ 				<textarea name="print_area" id="print_area" ></textarea>
+				<button id="btn_print">Print</button>
+<!-- 				<img id="img_camPH"> 
+ -->			</div>
 			
 			<div data-role="page" id="product" data-theme="c">
-				<div data-role="header" data-position="inline">
+				<div data-role="header" data-position="fixed" data-tap-toggle="false" >
 					<a href="#home" data-icon="home"  data-theme="c"> </a>
 					<h1>Bizcatch</h1>
 					<a href="#addproduct" data-icon="plus"> </a>
@@ -63,8 +99,7 @@
 						<ul data-role="listview" id="prod_list_view" data-divider-theme="c"  data-filter="true" data-input="#filterBasic-input" >
 							<li data-role="list-divider">Product</li>
 						</ul>
-					</div>
-				     <div id="confirm" data-role="popup" data-theme="a">
+					<div id="confirm" data-role="popup" data-theme="a">
 						<p id="question">Are you sure you want to delete:</p>
 						<div class="ui-grid-a">
 							<div class="ui-block-a">
@@ -75,10 +110,11 @@
 							</div>
 						</div>
 					</div><!-- /popup -->
+				</div>
 			</div>
 		
 			<div data-role="page" id="addproduct" data-theme="c">
-				<div data-role="header" data-position="inline">
+				<div data-role="header" data-position="fixed" data-tap-toggle="false" >
 					<a href="#home" data-icon="home"  data-theme="c"> </a>
 					<h1>Add Product</h1>
 					<a href="#product" data-icon="check"> </a>
@@ -122,6 +158,6 @@
 			</div>
 			
 			
-		</div>	
+			
 	</body>
 </html>

@@ -1,4 +1,5 @@
 var database=null;
+var bluetooth_prnt_var=null;
 (function ($) {
     $.fn.serializeFormJSON = function () {
 
@@ -52,8 +53,7 @@ $("#add_prod_form").validate({
 
 $("#product").on("pageshow" , function() {
   Prod_select();
-  
-  $( "#product" ).on( "swipeleft", "#prod_list_view li a", function( event ) {
+    $( "#product" ).on( "swipeleft", "#prod_list_view li a", function( event ) {
         var listitem = $( this ),
             // These are the classnames used for the CSS transition
             dir = event.type === "swipeleft" ? "left" : "",
@@ -98,7 +98,6 @@ $("#product").on("pageshow" , function() {
         });
     }
   
-  
 });
 });
 
@@ -107,6 +106,14 @@ function onDeviceReady()
 	console.log("device ready");
 database=window.openDatabase("myappdb","1.0","Application Database",200000);
 database.transaction(PopulateDatabase,errorDB,successDB); 
+
+console.log(window);
+console.log(navigator);
+console.log(Camera);
+if (typeof window.BTPrinter !== 'undefined') {
+	console.log("inside");
+	bluetooth_prnt_var = BTPrinter;			
+}
 
 }
 
@@ -122,6 +129,50 @@ database.transaction(PopulateDatabase,errorDB,successDB);
     //run an AJAX post request to your server-side script, $this.serialize() is the data from your form being added to the request
 	
 	console.log($this.serialize());
+	
 }); 
 
 
+function print_text(txt)
+{
+				BTPrinter.list(function(data){
+					console.log("Success");
+					alert("Success list");
+					console.log(data); 
+					var device_name=data[0];
+			  BTPrinter.connect(function(data){
+						console.log("Success connect");
+						alert("Success connect");
+						console.log(data);
+				BTPrinter.printText(function(data){
+				console.log("Success Print");
+				alert("Success Print");
+				console.log(data)
+				BTPrinter.disconnect(function(data){
+				console.log("Success disconnected");
+				alert("Success disconnected");
+				console.log(data)
+				},function(err){
+				console.log("Error");
+				alert("Error");
+				alert(err.toString());				
+				console.log(err)
+				}, device_name);
+				},function(err){
+				console.log("Error Print!");
+				alert("Error Print!");
+				alert(err.toString());
+				}, txt)			
+					},function(err){
+						console.log("Error");
+						alert("Error2");
+						alert(err.toString());
+						console.log(err)
+					}, device_name)
+			 },function(err){
+				 console.log("Error");
+				alert("Error 3");
+				alert(err.toString());
+				 console.log(err);
+			 })
+}
