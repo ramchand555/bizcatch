@@ -161,6 +161,46 @@ $("#frmunits").on("pageshow" , function() {
   
 });
 
+function BTlist()
+{
+	BTPrinter.list(function(data){
+		$("#bluetooth_list").html('');
+        console.log("Success");
+        console.log(data); //list of printer in data array
+$("#bluetooth_list").append('<legend>Bluetooth Devices</legend>');
+		 for(var k=0;k < data.length;k++)
+		 {
+			 console.log(k);
+		  $("#bluetooth_list").append('<input type="radio" name="bluetooth_list" id="bluetooth_list_'+k+'" value="'+data[k]+'" ><label for="bluetooth_list_'+k+'">'+data[k]+'</label>');
+		 }
+		$("#printer_list_div").trigger('create');
+		
+		 $("input[name='bluetooth_list']").on("change", function() {
+		  var index = $('input:radio[name=bluetooth_list]').index(this);
+		  window.localStorage.setItem("selected_printer_value", $("input[name='bluetooth_list']:checked").val());
+		  window.localStorage.setItem("selected_printer_index", $('input:radio[name=bluetooth_list]').index(this));
+		  console.log(localStorage.getItem("selected_printer_value"));
+		});
+		
+		$('input[type="radio"][name=bluetooth_list][value="'+localStorage.getItem("selected_printer_value")+'"]').attr("checked", "checked");
+		$("input[type='radio'][name=bluetooth_list]").checkboxradio("refresh");
+
+    },function(err){
+        console.log("Error");
+        console.log(err);
+		$("#print_error").html(err);
+    })
+}
+$("#printer_config").on("pageshow" , function() {
+  
+   var btlist = BTlist();
+  $("#bluetooth_list").append('<legend>Bluetooth Devices</legend>');
+ 
+});
+$(document).on('click', '#printer_refresh', function(e){
+    BTlist();
+});
+
 });
 
 function onDeviceReady() 
@@ -208,9 +248,42 @@ $(document).on('submit', '#add_unit_form', function (e) {
 	
 }); 
 
+
 function print_text(txt)
 {
-				BTPrinter.list(function(data){
+	$("div#divLoading").addClass('show');
+	 setTimeout(function(){
+				BTPrinter.connect(function(data){
+						console.log("Success connect");
+						//alert("Success connect");
+						console.log(data);
+				BTPrinter.printText(function(data){
+				console.log("Success Print");
+				//alert("Success Print");
+				console.log(data);
+				setTimeout(function(){
+				BTPrinter.disconnect();	
+				$("div#divLoading").removeClass('show');
+				}, 2000)
+				},function(err){
+				$("div#divLoading").removeClass('show');
+				console.log("Error Print!");
+				//alert("Error Print!");
+				console.log(err)
+				//console.log(err.toString());
+				}, txt)			
+					},function(err){
+						$("div#divLoading").removeClass('show');
+						console.log("Error");
+						//alert("Error2");
+						//alert(err.toString());
+						alert("Can't able to connect printer , Try again");
+						console.log(err)
+					}, localStorage.getItem("selected_printer_value"))  
+		}, 2000);
+	
+	
+				/*BTPrinter.list(function(data){
 					console.log("Success");
 					alert("Success list");
 					console.log(data); 
@@ -249,5 +322,5 @@ function print_text(txt)
 				alert("Error 3");
 				alert(err.toString());
 				 console.log(err);
-			 })
+			 })*/
 }
