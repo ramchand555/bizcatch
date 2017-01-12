@@ -53,13 +53,13 @@
 				<div data-role="header" data-position="fixed" data-tap-toggle="false" >
 					<a href="#home" data-icon="home"  data-theme="c"> </a>
 					<h1>Bizcatch</h1>
-					<a href="#home" data-icon="check"> </a>
 				</div>
 				<div data-role="content" data-theme="a">
 				<br /><br />
-					<a href="#product" data-role="button" data-theme="c" data-icon="check">Product</a><br />
+					<a href="#masterdata" data-role="button" data-theme="c" data-icon="check">Master Data</a><br />
 					<a href="#home" data-role="button" data-theme="c" data-icon="check">Sales</a><br />
-					<a href="#home" data-role="button" data-theme="c" data-icon="check">Report</a><br   />
+					<a href="#home" data-role="button" data-theme="c" data-icon="check">Purchase</a><br   />
+					<a href="#home" data-role="button" data-theme="c" data-icon="check">Reports</a><br   />
 					<a href="#home" data-role="button" data-theme="c" data-icon="check">Settings</a><br/>
 				</div>
 <!-- 				<button id="btn_camera">Camera</button> -->
@@ -67,7 +67,22 @@
 				<button id="btn_print">Print</button>
 <!-- 				<img id="img_camPH"> 
  -->			</div>
-			
+
+
+			<div data-role="page" id="masterdata" data-theme="c">
+				<div data-role="header" data-position="fixed" data-tap-toggle="false" >
+					<a href="#home" data-icon="home"  data-theme="c"> </a>
+					<h1>Bizcatch</h1>
+				</div>
+				<div data-role="content" data-theme="a">
+				<br /><br />
+					<a href="#product" data-role="button" data-theme="c" data-icon="check">Product</a><br />
+					<a href="#home" data-role="button" data-theme="c" data-icon="check">Customer</a><br />
+					<a href="#home" data-role="button" data-theme="c" data-icon="check">Supplier</a><br   />
+					<a href="#frmunits" data-role="button" data-theme="c" data-icon="check">Units</a><br/>
+				</div>
+			</div>
+ 
 			<div data-role="page" id="product" data-theme="c">
 				<div data-role="header" data-position="fixed" data-tap-toggle="false" >
 					<a href="#home" data-icon="home"  data-theme="c"> </a>
@@ -91,13 +106,40 @@
 						Prod_select();
 						});
 			    </script> -->
-					
 							
 					<div data-role="fieldcontain">
 						<input id="filterBasic-input" data-type="search">
 					</div>
 						<ul data-role="listview" id="prod_list_view" data-divider-theme="c"  data-filter="true" data-input="#filterBasic-input" >
 							<li data-role="list-divider">Product</li>
+						</ul>
+					<div id="confirm" data-role="popup" data-theme="a">
+						<p id="question">Are you sure you want to delete:</p>
+						<div class="ui-grid-a">
+							<div class="ui-block-a">
+								<a id="yes" class="ui-btn ui-corner-all ui-mini ui-btn-a" data-rel="back">Yes</a>
+							</div>
+							<div class="ui-block-b">
+								<a id="cancel" class="ui-btn ui-corner-all ui-mini ui-btn-a" data-rel="back">Cancel</a>
+							</div>
+						</div>
+					</div><!-- /popup -->
+				</div>
+			</div>
+	
+			<div data-role="page" id="frmunits" data-theme="c">
+				<div data-role="header" data-position="fixed" data-tap-toggle="false" >
+					<a href="#home" data-icon="home"  data-theme="c"> </a>
+					<h1>Bizcatch</h1>
+					<a href="#addunits" data-icon="plus"> </a>
+				</div>
+				
+				<div data-role="content" data-theme="a">
+					<div data-role="fieldcontain">
+						<input id="filterBasic-input" data-type="search">
+					</div>
+						<ul data-role="listview" id="unit_list_view" data-divider-theme="c"  data-filter="true" data-input="#filterBasic-input" >
+							<li data-role="list-divider">Unit</li>
 						</ul>
 					<div id="confirm" data-role="popup" data-theme="a">
 						<p id="question">Are you sure you want to delete:</p>
@@ -157,7 +199,40 @@
 					</div>
 			</div>
 			
-			
+			<div data-role="page" id="addunits" data-theme="c">
+				<div data-role="header" data-position="fixed" data-tap-toggle="false" >
+					<a href="#home" data-icon="home"  data-theme="c"> </a>
+					<h1>Add Units</h1>
+					<a href="#frmunits" data-icon="check"> </a>
+				</div>
+					<div data-role="content" data-theme="a">
+				
+					<form action="#" method="get" id="add_unit_form" novalidate>
+					<div data-role="fieldcontainer">
+						<label for="unitadd">Unit:<em>* </em> </label>
+						<input type="text" name="unitadd" id="unitadd" />	
+					</div>
+					<div data-role="fieldcontainer">
+						<label for="description">Description:<em>* </em></label>
+						<input type="text" name="description" id="description" required/>
+					</div>
+					<input type="hidden" name="p_unit_id" id="p_unit_id" />
+					<style>
+						label.error {
+									color: red;
+									}
+						em { color: red; font-weight: bold; padding-right: .25em; }
+					</style>
+					<div class="ui-body">
+						<fieldset class="ui-grid-a">
+							<div class="ui-block-a"><button type="reset" onclick="redirect('frmunits');" data-theme="c">Cancel</button></div>
+							<div class="ui-block-b"><button type="submit" data-theme="c">Save</button></div>
+					    </fieldset>
+					</div>
+					<p class="status_msg"></p>
+					</form>
+					</div>
+			</div>
 			
 	</body>
 </html>

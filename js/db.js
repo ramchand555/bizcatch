@@ -2,7 +2,8 @@
 
 function PopulateDatabase(tx)
 {
-tx.executeSql("Create Table IF NOT EXISTS products(p_id INTEGER PRIMARY KEY AUTOINCREMENT,code text,desc text,unit int,price REAL)");
+tx.executeSql("Create Table IF NOT EXISTS products(p_id INTEGER PRIMARY KEY AUTOINCREMENT,code integer,desc text,unit text,price REAL,status Numeric)");
+tx.executeSql("Create Table IF NOT EXISTS unit(p_id INTEGER PRIMARY KEY AUTOINCREMENT,unit text,description text,status Numeric)");
 //tx.executeSql("Insert into product values(1,'P1','Produt1',2,12.5)");
 //tx.executeSql("Insert into product values(2,'P2','Produt2',4,'12.5')");
 }
@@ -42,6 +43,25 @@ function edit(form,id)
 	}); 
 }
 
+function unit_edit(form,id)
+{
+	
+	console.log("#####"+form+"#####"+id);
+ 	database.transaction(function(tx) {
+    tx.executeSql('SELECT * FROM unit where p_id=?', [id], function(tx, result) {
+    $.each(result.rows,function(index){
+    var row = result.rows.item(index);
+	document.getElementById("p_unit_id").value=row['p_id'];
+	document.getElementById("unitadd").value=row['unit'];
+	document.getElementById("description").value=row['description'];
+	console.log(row);
+	$.mobile.navigate( "#addunits" );
+	});
+	}, function(tx, error) {
+      console.log('SELECT error: ' + error.message);
+    });
+	}); 
+}
 
 function delete_prod(p_id)
 {
@@ -81,6 +101,31 @@ database.transaction(function(tx) {
   }); 
 }
 
+function unit_add_data(obj)
+{
+console.log(obj); 
+
+database.transaction(function(tx) {
+	if(obj.p_unit_id === undefined ||  obj.p_unit_id === null ||  obj.p_unit_id === '')
+    tx.executeSql('INSERT INTO unit(description,unit) VALUES (?,?)', [obj.description,obj.unitadd]);
+	else
+    tx.executeSql('update unit set  description=?, unit=? where p_id=?', [obj.description,obj.unitadd,obj.p_unit_id]);
+  }, function(error) {
+    console.log('Transaction ERROR: ' + error.message);
+	$("#status_msg").html('<span id="error_message" class="error">Transaction ERROR:<b>' + error.message+'</b></span>');
+  }, function() {
+	  $(".status_msg").fadeIn().html('<span id="success_message" class="success"><b>Data saved successfully</b></span>');
+				setTimeout(function() {
+					$('.status_msg').fadeOut("slow");
+				}, 2000 );
+	 $('#add_unit_form').trigger("reset");
+	 $('form#add_unit_form input[type=hidden]').val('');
+	 if(obj.p_unit_id !== undefined &&  obj.p_unit_id !== null &&  obj.p_unit_id !== '')
+	 $.mobile.navigate( "#frmunits" );
+
+  }); 
+}
+
 function Prod_select()
 {
 	//console.log("kkk");
@@ -99,3 +144,21 @@ function Prod_select()
     });
   });
 }				
+
+
+function unit_select()
+{
+	database.transaction(function(tx) {
+    tx.executeSql('SELECT * FROM unit', [], function(tx, result) {
+		$('ul#unit_list_view').html('<li data-role="list-divider">Units</li>');
+        $.each(result.rows,function(index){
+            var row = result.rows.item(index);
+            $('ul#unit_list_view').append('<li><a href="#" id="'+row['p_id']+'" onclick="unit_edit(\'frmunits\','+row['p_id']+');"><h3 class="ui-li-heading">'+row['description']+'</h3><p class="ui-li-unit">unit: '+row['unit']+'</p></a></li>');
+        });
+ 
+        $('ul#unit_list_view').listview('refresh');
+    }, function(tx, error) {
+      console.log('SELECT error: ' + error.message);
+    });
+  });
+}	
