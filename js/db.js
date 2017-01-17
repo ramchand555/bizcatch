@@ -85,6 +85,27 @@ function cust_edit(form,id)
 	}); 
 }
 
+function supp_edit(form,id)
+{
+	console.log("#####"+form+"#####"+id);
+ 	database.transaction(function(tx) {
+    tx.executeSql('SELECT * FROM customer_supplier where p_id=?', [id], function(tx, result) {
+    $.each(result.rows,function(index){
+    var row = result.rows.item(index);
+	document.getElementById("p_supp_id").value=row['p_id'];
+	document.getElementById("supp_name").value=row['name'];
+	document.getElementById("s_address").value=row['address'];
+	document.getElementById("s_mobile").value=row['mobile_no'];
+	document.getElementById("s_email").value=row['email_id'];
+	console.log(row);
+	$.mobile.navigate( "#addsupplier" );
+	});
+	}, function(tx, error) {
+      console.log('SELECT error: ' + error.message);
+    });
+	}); 
+}
+
 
 function delete_prod(p_id)
 {
@@ -175,6 +196,32 @@ database.transaction(function(tx) {
   }); 
 }
 
+function supp_add_data(obj)
+{
+console.log(obj); 
+
+database.transaction(function(tx) {
+	if(obj.p_supp_id === undefined ||  obj.p_supp_id === null ||  obj.p_supp_id === '')
+    tx.executeSql('INSERT INTO customer_supplier(name,address,mobile_no,email_id,status) VALUES (?,?,?,?,2)', [obj.supp_name,obj.s_address,obj.s_mobile,obj.s_email]);
+	else
+		console.log('Transaction update ');
+    tx.executeSql('update customer_supplier set name=?, address=?, mobile_no=?, email_id=? where p_id=?', [obj.supp_name,obj.s_address,obj.s_mobile,obj.s_email,obj.p_supp_id]);
+  }, function(error) {
+    console.log('Transaction ERROR: ' + error.message);
+	$("#status_msg").html('<span id="error_message" class="error">Transaction ERROR:<b>' + error.message+'</b></span>');
+  }, function() {
+	  $(".status_msg").fadeIn().html('<span id="success_message" class="success"><b>Data saved successfully</b></span>');
+				setTimeout(function() {
+					$('.status_msg').fadeOut("slow");
+				}, 2000 );
+	 $('#add_supp_form').trigger("reset");
+	 $('form#add_supp_form input[type=hidden]').val('');
+	 if(obj.p_supp_id !== undefined &&  obj.p_supp_id !== null &&  obj.p_supp_id !== '')
+	 $.mobile.navigate( "#supplier" );
+
+  }); 
+}
+
 
 function Prod_select()
 {
@@ -230,3 +277,21 @@ function cust_select()
     });
   });
 }				
+
+function supp_select()
+{
+//	console.log("kkk");
+	database.transaction(function(tx) {
+    tx.executeSql('SELECT * FROM customer_supplier where status = 2', [], function(tx, result) {
+		$('ul#supp_list_view').html('<li data-role="list-divider">Supplier</li>');
+        $.each(result.rows,function(index){
+            var row = result.rows.item(index);
+            $('ul#supp_list_view').append('<li><a href="#" id="'+row['p_id']+'" onclick="supp_edit(\'supplier\','+row['p_id']+');"><h3 class="ui-li-heading">'+row['name']+'</h3><p class="ui-li-desc">Address: '+row['address']+'      '+'Mobile No: '+row['mobile_no']+'      '+'Email Id: '+row['email_id']+'</p></a></li>');
+        });
+ 
+        $('ul#supp_list_view').listview('refresh');
+    }, function(tx, error) {
+      console.log('SELECT error: ' + error.message);
+    });
+  });
+}	

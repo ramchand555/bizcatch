@@ -82,7 +82,7 @@
 				<br /><br />
 					<a href="#product" data-role="button" data-theme="c" data-icon="check">Product</a><br />
 					<a href="#customer" data-role="button" data-theme="c" data-icon="check">Customer</a><br />
-					<a href="#home" data-role="button" data-theme="c" data-icon="check">Supplier</a><br   />
+					<a href="#supplier" data-role="button" data-theme="c" data-icon="check">Supplier</a><br   />
 					<a href="#frmunits" data-role="button" data-theme="c" data-icon="check">Units</a><br/>
 				</div>
 			</div>
@@ -269,7 +269,7 @@
 			<div data-role="page" id="addcustomer" data-theme="c">
 				<div data-role="header" data-position="fixed" data-tap-toggle="false" >
 					<a href="#home" data-icon="home"  data-theme="c"> </a>
-					<h1>Add Product</h1>
+					<h1>Add Customer</h1>
 					<a href="#customer" data-icon="check"> </a>
 				</div>
 					<div data-role="content" data-theme="a">
@@ -309,6 +309,78 @@
 					</form>
 					</div>
 			</div>			
+<!-- Supplier Screen -->	
+			<div data-role="page" id="supplier" data-theme="c">
+				<div data-role="header" data-position="fixed" data-tap-toggle="false" >
+					<a href="#home" data-icon="home"  data-theme="c"> </a>
+					<h1>Bizcatch</h1>
+					<a href="#addsupplier" data-icon="plus"> </a>
+				</div>
+				
+				<div data-role="content" data-theme="a">
+					<div data-role="fieldcontain">
+						<input id="filterBasic-input" data-type="search">
+					</div>
+						<ul data-role="listview" id="supp_list_view" data-divider-theme="c"  data-filter="true" data-input="#filterBasic-input" >
+							<li data-role="list-divider">Supplier</li>
+						</ul>
+					<div id="confirm" data-role="popup" data-theme="a">
+						<p id="question">Are you sure you want to delete:</p>
+						<div class="ui-grid-a">
+							<div class="ui-block-a">
+								<a id="yes" class="ui-btn ui-corner-all ui-mini ui-btn-a" data-rel="back">Yes</a>
+							</div>
+							<div class="ui-block-b">
+								<a id="cancel" class="ui-btn ui-corner-all ui-mini ui-btn-a" data-rel="back">Cancel</a>
+							</div>
+						</div>
+					</div><!-- /popup -->
+				</div>
+			</div>			
+<!-- Add Supplier Screen -->				
+			<div data-role="page" id="addsupplier" data-theme="c">
+				<div data-role="header" data-position="fixed" data-tap-toggle="false" >
+					<a href="#home" data-icon="home"  data-theme="c"> </a>
+					<h1>Add supplier</h1>
+					<a href="#supplier" data-icon="check"> </a>
+				</div>
+					<div data-role="content" data-theme="a">
+				
+					<form action="#" method="get" id="add_supp_form" novalidate>
+
+					<div data-role="fieldcontainer">
+						<label for="supp_name">Name:<em>* </em></label>
+						<input type="text" name="supp_name" id="supp_name" class="required" required/>
+					</div>
+					<div data-role="fieldcontainer">
+						<label for="s_address">Address:<em>* </em></label>
+						<input type="text" name="s_address" id="s_address" required/>
+					</div>
+					<div data-role="fieldcontainer">
+						<label for="s_mobile">Moblie No:<em>* </em> </label>
+						<input type="text" name="s_mobile" id="s_mobile" />	
+					</div>
+					<div data-role="fieldcontainer">
+						<label for="s_email">Email_id:<em>* </em> </label>
+						<input type="text" name="s_email" id="s_email" />
+					</div>
+					<input type="hidden" name="p_supp_id" id="p_supp_id" />
+					<style>
+						label.error {
+									color: red;
+									}
+						em { color: red; font-weight: bold; padding-right: .25em; }
+					</style>
+					<div class="ui-body">
+						<fieldset class="ui-grid-a">
+							<div class="ui-block-a"><button type="reset" onclick="redirect('supplier');" data-theme="c">Cancel</button></div>
+							<div class="ui-block-b"><button type="submit" data-theme="c">Save</button></div>
+					    </fieldset>
+					</div>
+					<p class="status_msg"></p>
+					</form>
+					</div>
+			</div>						
 <!-- Settings Screen -->					
 			<div data-role="page" id="settings" data-theme="c">
 				<div data-role="header" data-position="fixed" data-tap-toggle="false" >
