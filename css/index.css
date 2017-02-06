@@ -21,10 +21,18 @@
 	background: #CCF5CC;
 }
 .error{
-	background: red;
+	color: red;
+
+}
+input.error{
+		border:1px solid red !important;
+		box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 0, 0, 0.6);
 }
 .info{
 	background: rgba(255, 255, 0, 0.3) !important;
+}
+.prod_code{
+	    width: 200px !important;
 }
 #divLoading
 {
@@ -55,5 +63,9 @@
     height : 32px;
     margin-left : -16px;
     margin-top : -16px;
+}
+.icon_alg
+{
+	margin-top:10px !important;
 }
 

@@ -59,7 +59,7 @@
 				<div data-role="content" data-theme="a">
 				<br /><br />
 					<a href="#masterdata" data-role="button" data-theme="c" data-icon="check">Master Data</a><br />
-					<a href="#home" data-role="button" data-theme="c" data-icon="check">Sales</a><br />
+					<a href="#sales" data-role="button" data-theme="c" data-icon="check">Sales</a><br />
 					<a href="#home" data-role="button" data-theme="c" data-icon="check">Purchase</a><br   />
 					<a href="#home" data-role="button" data-theme="c" data-icon="check">Reports</a><br   />
 					<a href="#settings" data-role="button" data-theme="c" data-icon="check">Settings</a><br/>
@@ -411,6 +411,71 @@
 				<p id="print_error error"></p>
 				</div>
 			</div>
+<!-- Sales Screen -->				
+	<div data-role="page" id="sales" data-theme="c">
+				<div data-role="header" data-position="fixed" data-tap-toggle="false" >
+					<a href="#home" data-icon="home"  data-theme="c"> </a>
+					<h1>Bizcatch</h1>	
+				<a href="#" id="save_sales"  data-icon="check"> Print</a>					
+				</div>
+				<div data-role="content"  data-theme="a">
+				<p class="status_msg"></p>
+				<form action="#" method="post" id="add_sales_form" novalidate>
+<!-- 				<div data-role="fieldcontain">					
+					<input type="text" name="p_code" id="p_code" data-wrapper-class="prod_code" placeholder="Enter Product code">	
+					<a href="#" id="plus" class="ui-btn"><b>+</b></a>		
+				</div> -->
+				<fieldset class="ui-grid-e">
+    <div class="ui-block-a">
+					<input type="text"  name="p_code" id="p_code" data-wrapper-class="prod_code" placeholder="Enter Product code">	
+    </div>
+    <div class="ui-block-b">
+	<a href="#" data-role="button" class="icon_alg" id="plus" data-icon="plus" data-iconpos="notext">Add</a>
+    </div>
+</fieldset>
+			<div id="slaes_order_div" style="overflow:auto">
+<!-- 			<div class="ui-grid-c ui-responsive">
+			<div class="ui-block-a"><div class="ui-body ui-body-d">Product Name</div></div>
+			<div class="ui-block-b"><div class="ui-body ui-body-d">Quantity</div></div>
+			<div class="ui-block-c"><div class="ui-body ui-body-d">Rate</div></div>
+			<div class="ui-block-d"><div class="ui-body ui-body-d">value</div></div>
+			</div> -->
+			
+      <div class="error"></div>
+            <table id="tableProp" data-role="table" data-mode="Reflow" class="ui-body-d ui-shadow table-stripe ui-responsive" data-column-popup-theme="a">
+                <thead>
+                    <tr class="ui-bar-d">
+                        <th data-priority="2" style="text-align: center">Code</th>
+						 <th  style="text-align: center; display:none">P_id</th>
+                        <th  style="text-align: center;">Name</th>
+                        <th style="text-align: center">Qty</th>
+                         <th data-priority="3"   style="text-align: center">Price</th>
+                          <th data-priority="3"   style="text-align: center">Total</th>         <th data-priority="3"   style="text-align: center"> Action</th>                         
+                      
+                    </tr>
+                </thead>
+                <tfoot>
+    <tr class="ui-bar-c">
+       <th data-priority="2" style="text-align: center">Total</th>
+        <th data-priority="2" style="text-align: center"></th>
+        <th data-priority="2" style="text-align: center"></th>
+        <th data-priority="2" style="text-align: center"></th>
+        <th data-priority="2" id="total" style="text-align: center"></th>
+       
+    <tr>
+</tfoot>
+                <tbody id="tbProp">
+ 
+ 
+                </tbody>
+            </table>
+        </div> </form>
+		</div>
+		<div id="divLoading"> 
+				</div>
+    </div>   
+ 
+		
 			
 	</body>
 </html>

@@ -6,6 +6,9 @@ tx.executeSql("Create Table IF NOT EXISTS products(p_id INTEGER PRIMARY KEY AUTO
 tx.executeSql("Create Table IF NOT EXISTS unit(p_id INTEGER PRIMARY KEY AUTOINCREMENT,unit text,description text,status Numeric)");
 tx.executeSql("Create Table IF NOT EXISTS customer_supplier(p_id INTEGER PRIMARY KEY AUTOINCREMENT,name text,address text,mobile_no text,email_id text,status Numeric)");
 //tx.executeSql("Insert into product values(1,'P1','Produt1',2,12.5)");
+tx.executeSql("Create Table IF NOT EXISTS retail_sale(id INTEGER PRIMARY KEY AUTOINCREMENT,bill_no INTEGER,date DATETIME DEFAULT CURRENT_TIMESTAMP ,status text)");
+tx.executeSql("Create Table IF NOT EXISTS retail_sale_detail(id INTEGER PRIMARY KEY AUTOINCREMENT,retail_sale_id INTEGER,product_id INTEGER ,quantity INTEGER ,price text ,status text ,FOREIGN KEY(retail_sale_id) REFERENCES retail_sale(id))");
+
 //tx.executeSql("Insert into product values(2,'P2','Produt2',4,'12.5')");
 }
 
@@ -122,7 +125,6 @@ function delete_prod(p_id)
 
 function Prod_add_data(obj)
 {
-console.log(obj); 
 
 database.transaction(function(tx) {
 	if(obj.p_id === undefined ||  obj.p_id === null ||  obj.p_id === '')
@@ -222,13 +224,92 @@ database.transaction(function(tx) {
   }); 
 }
 
+function sales_add_data(obj_arry)
+{
+	
+		function printDate() {
+		var temp = new Date();
+		var dateStr = padStr(temp.getFullYear()) +
+					  padStr(1 + temp.getMonth()) +
+					  padStr(temp.getDate()) +
+					  padStr(temp.getHours()) +
+					  padStr(temp.getMinutes()) +
+					  padStr(temp.getSeconds());
+					  return dateStr;
+		}
 
-function Prod_select()
+		function padStr(i) {
+		return (i < 10) ? "0" + i : "" + i;
+		}
+		var datetime=printDate();
+	database.transaction(function(tx) {
+		
+    tx.executeSql('INSERT INTO retail_sale(date,status) VALUES ("'+datetime+'","Active")', [], function(tx, result) {
+		
+		    var last_record=obj_arry[obj_arry.length -1].p_id;
+			//database.transaction(function(tx) {
+			for (var i=0; i < obj_arry.length; i++) {
+				var temp=obj_arry[i];
+				console.log(temp);	
+				var lastid=result.insertId;
+		    var transaction = function(lastid){
+				tx.executeSql('INSERT INTO retail_sale_detail(retail_sale_id,product_id,quantity,price,status) VALUES (?,?,?,?,?)', [lastid,temp.p_id,temp.qty,temp.price,1], function(tx, result) {
+				console.log("suc inside");
+				
+				var obj_len=obj_arry.length -1;
+				console.log(i,obj_len);
+				if(temp.p_id == last_record)
+				{
+				 $("div#divLoading").removeClass('show');				 
+				$(".status_msg").fadeIn().html('<span id="success_message" class="success"><b>Data saved successfully</b></span>');				 
+					setTimeout(function() {
+					$('.status_msg').fadeOut("slow");
+				}, 2000 );
+				 $('#add_sales_form')[0].reset();
+				 $('#tbProp').html('');
+				 $('#total').val(0);	
+				}
+				
+			}, function(tx, error) {
+			  console.log('SELECT error: ' + error.message);
+			  	$("#status_msg").html('<span id="error_message" class="error">Transaction ERROR:<b>' + error.message+'</b></span>');
+
+			   $("div#divLoading").removeClass('show');
+			});
+			}(lastid) 
+			}
+			//});
+
+		
+
+	}, function(tx, error) {
+      console.log('SELECT error: ' + error.message);
+  	$("#status_msg").html('<span id="error_message" class="error">Transaction ERROR:<b>' + error.message+'</b></span>');
+	  $("div#divLoading").removeClass('show');
+    });
+	});
+
+}
+
+function Prod_select(source)
 {
 	//console.log("kkk");
 	database.transaction(function(tx) {
     tx.executeSql('SELECT * FROM products', [], function(tx, result) {
 	//	$('ul#prod_list_view').empty();
+		if(source == "sales")
+		{
+			product_list = new Array();
+			console.log("sales-inside");
+			console.log(result.rows);
+			 $.each(result.rows,function(index){
+				 product_list.push(result.rows.item(index));
+			 });
+			 $("div#divLoading").removeClass('show');
+			//product_list=result.rows;
+			//console.log(product_list[0]['code']);
+			return false;	
+		}
 		$('ul#prod_list_view').html('<li data-role="list-divider">Product</li>');
         $.each(result.rows,function(index){
             var row = result.rows.item(index);
@@ -237,6 +318,7 @@ function Prod_select()
  
         $('ul#prod_list_view').listview('refresh');
     }, function(tx, error) {
+      $("div#divLoading").removeClass('show');
       console.log('SELECT error: ' + error.message);
     });
   });
