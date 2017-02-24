@@ -37,6 +37,9 @@ switch(page)
 	case "supplier":
 	$.mobile.navigate( "#supplier" );
 	break;
+	case "settings":
+	$.mobile.navigate( "#settings" );
+	break;
 }	
 }
 
@@ -60,6 +63,11 @@ function save_supp(obj)
 {
 	console.log(obj);
 	supp_add_data(obj); 
+}	
+function save_store(obj)
+{
+	console.log(obj);
+	store_add_data(obj); 
 }	
 function save_sales(obj_ary)
 {
@@ -112,6 +120,18 @@ $("#add_supp_form").validate({
         return false;	
 	}	  
 });
+
+$("#add_store_form").validate({
+		errorPlacement: function (error, element) {
+        error.appendTo(element.parent().prev());
+    },
+	submitHandler: function (form) {
+		var $this = $(form);		
+		save_store($this.serializeFormJSON());
+        return false;	
+	}	  
+});
+
 
 $("#add_sales_form").validate({
 		errorPlacement: function (error, element) {
@@ -233,7 +253,6 @@ $("#frmunits").on("pageshow" , function() {
             $( "#confirm #yes" ).off();
         });
     }
-  
 });
 
 $("#customer").on("pageshow" , function() {
@@ -244,7 +263,6 @@ $("#customer").on("pageshow" , function() {
             dir = event.type === "swipeleft" ? "left" : "",
             // Check if the browser supports the transform (3D) CSS transition
             transition = $.support.cssTransform3d ? dir : false;
-			
 			//console.log(this.id);
             confirmAndDelete( listitem, transition ,this.id );
     });
@@ -326,6 +344,10 @@ $("#supplier").on("pageshow" , function() {
             $( "#confirm #yes" ).off();
         });
     }
+});
+
+$("#store_info").on("pageshow" , function() {
+	store_select();
 });
 
 
@@ -432,6 +454,21 @@ $(document).on('submit', '#add_cust_form', function (e) {
 }); 
 
 $(document).on('submit', '#add_supp_form', function (e) {
+	
+	
+    //cache the form element for use in this function
+    var $this = $(this);
+
+    //prevent the default submission of the form
+    e.preventDefault();
+
+    //run an AJAX post request to your server-side script, $this.serialize() is the data from your form being added to the request
+	
+	console.log($this.serialize());
+	
+}); 
+
+$(document).on('submit', '#add_store_form', function (e) {
 	
 	
     //cache the form element for use in this function

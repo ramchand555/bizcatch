@@ -72,7 +72,7 @@
 				</div>
 			</div>
 
-
+<!-- masterdata Screen -->	
 			<div data-role="page" id="masterdata" data-theme="c">
 				<div data-role="header" data-position="fixed" data-tap-toggle="false" >
 					<a href="#home" data-icon="home"  data-theme="c"> </a>
@@ -389,6 +389,7 @@
 				</div>
 				<div data-role="content" data-theme="a">
 					<a href="#printer_config" data-role="button" data-theme="c" data-icon="check">Printer Configuration</a><br />											
+					<a href="#store_info" data-role="button" data-theme="c" data-icon="check">Store Information</a><br />											
 				</div>
 			</div>
 <!-- Printer config Screen -->					
@@ -411,6 +412,51 @@
 				<p id="print_error error"></p>
 				</div>
 			</div>
+	
+<!--  Store Information Screen -->								
+			<div data-role="page" id="store_info" data-theme="c">
+				<div data-role="header" data-position="fixed" data-tap-toggle="false" >
+					<a href="#home" data-icon="home"  data-theme="c"> </a>
+					<h1>Add Store information</h1>
+					<a href="#settings" data-icon="check"> </a>
+				</div>
+					<div data-role="content" data-theme="a">
+				
+					<form action="#" method="get" id="add_store_form" novalidate>
+
+					<div data-role="fieldcontainer">
+						<label for="store_name">Store Name:<em>* </em></label>
+						<input type="text" name="store_name" id="store_name" class="required" required/>
+					</div>
+					<div data-role="fieldcontainer">
+						<label for="store_address">Store Address:<em>* </em></label>
+						<input type="text" name="store_address" id="store_address" required/>
+					</div>
+					<div data-role="fieldcontainer">
+						<label for="store_mobile">Moblie No:<em>* </em> </label>
+						<input type="text" name="store_mobile" id="store_mobile" />	
+					</div>
+					<div data-role="fieldcontainer">
+						<label for="store_email">Email_id:<em>* </em> </label>
+						<input type="text" name="store_email" id="store_email" />
+					</div>
+					<input type="hidden" name="p_store_id" id="p_store_id" />
+					<style>
+						label.error {
+									color: red;
+									}
+						em { color: red; font-weight: bold; padding-right: .25em; }
+					</style>
+					<div class="ui-body">
+						<fieldset class="ui-grid-a">
+							<div class="ui-block-a"><button type="reset" onclick="redirect('settings');" data-theme="c">Cancel</button></div>
+							<div class="ui-block-b"><button type="submit" data-theme="c">Save</button></div>
+					    </fieldset>
+					</div>
+					<p class="status_msg"></p>
+					</form>
+					</div>
+			</div>									
 <!-- Sales Screen -->				
 	<div data-role="page" id="sales" data-theme="c">
 				<div data-role="header" data-position="fixed" data-tap-toggle="false" >
@@ -418,7 +464,7 @@
 					<h1>Bizcatch</h1>	
 				<a href="#" id="save_sales"  data-icon="check"> Print</a>					
 				</div>
-				<div data-role="content"  data-theme="a">
+				<div data-role="content"  data-theme="c">
 				<p class="status_msg"></p>
 				<form action="#" method="post" id="add_sales_form" novalidate>
 <!-- 				<div data-role="fieldcontain">					
@@ -426,15 +472,15 @@
 					<a href="#" id="plus" class="ui-btn"><b>+</b></a>		
 				</div> -->
 				<fieldset class="ui-grid-e">
-    <div class="ui-block-a">
-					<input type="text"  name="p_code" id="p_code" data-wrapper-class="prod_code" placeholder="Enter Product code">	
-    </div>
-    <div class="ui-block-b">
-	<a href="#" data-role="button" class="icon_alg" id="plus" data-icon="plus" data-iconpos="notext">Add</a>
-    </div>
-</fieldset>
-			<div id="slaes_order_div" style="overflow:auto">
-<!-- 			<div class="ui-grid-c ui-responsive">
+					<div class="ui-block-c">
+						<input type="text"  name="p_code" id="p_code" data-wrapper-class="prod_code" placeholder="Enter Product code">	
+					</div>
+					<div class="ui-block-c" data-theme="c">
+						<a href="#" data-role="button" class="icon_alg" id="plus" data-icon="plus" data-iconpos="notext">Add</a>
+					</div>
+				</fieldset>
+			<div id="slaes_order_div" style="overflow:auto"  data-theme="c">
+			<!-- 			<div class="ui-grid-c ui-responsive">
 			<div class="ui-block-a"><div class="ui-body ui-body-d">Product Name</div></div>
 			<div class="ui-block-b"><div class="ui-body ui-body-d">Quantity</div></div>
 			<div class="ui-block-c"><div class="ui-body ui-body-d">Rate</div></div>
@@ -442,40 +488,34 @@
 			</div> -->
 			
       <div class="error"></div>
-            <table id="tableProp" data-role="table" data-mode="Reflow" class="ui-body-d ui-shadow table-stripe ui-responsive" data-column-popup-theme="a">
+            <table id="tableProp" data-role="table" data-mode="Reflow" class="ui-body-d ui-shadow table-stripe ui-responsive" data-column-popup-theme="c">
                 <thead>
-                    <tr class="ui-bar-d">
+                    <tr class="ui-bar-c">
                         <th data-priority="2" style="text-align: center">Code</th>
-						 <th  style="text-align: center; display:none">P_id</th>
-                        <th  style="text-align: center;">Name</th>
+						<th style="text-align: center; display:none">P_id</th>
+                        <th style="text-align: center;">Name</th>
                         <th style="text-align: center">Qty</th>
-                         <th data-priority="3"   style="text-align: center">Price</th>
-                          <th data-priority="3"   style="text-align: center">Total</th>         <th data-priority="3"   style="text-align: center"> Action</th>                         
+                        <th data-priority="3"   style="text-align: center">Price</th>
+                        <th data-priority="3"   style="text-align: center">Total</th>         <th data-priority="3"   style="text-align: center"> Action</th>                         
                       
                     </tr>
                 </thead>
                 <tfoot>
-    <tr class="ui-bar-c">
-       <th data-priority="2" style="text-align: center">Total</th>
-        <th data-priority="2" style="text-align: center"></th>
-        <th data-priority="2" style="text-align: center"></th>
-        <th data-priority="2" style="text-align: center"></th>
-        <th data-priority="2" id="total" style="text-align: center"></th>
-       
-    <tr>
-</tfoot>
+					<tr class="ui-bar-c">
+						<th data-priority="2" style="text-align: center">Total</th>
+						<th data-priority="2" style="text-align: center"></th>
+						<th data-priority="2" style="text-align: center"></th>
+						<th data-priority="2" style="text-align: center"></th>
+						<th data-priority="2" id="total" style="text-align: center"></th>
+					<tr>
+				</tfoot>
                 <tbody id="tbProp">
- 
- 
-                </tbody>
+                 </tbody>
             </table>
         </div> </form>
 		</div>
 		<div id="divLoading"> 
 				</div>
     </div>   
- 
-		
-			
 	</body>
 </html>

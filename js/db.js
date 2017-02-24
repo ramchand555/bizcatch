@@ -5,6 +5,7 @@ function PopulateDatabase(tx)
 tx.executeSql("Create Table IF NOT EXISTS products(p_id INTEGER PRIMARY KEY AUTOINCREMENT,code integer,desc text,unit text,price REAL,status Numeric)");
 tx.executeSql("Create Table IF NOT EXISTS unit(p_id INTEGER PRIMARY KEY AUTOINCREMENT,unit text,description text,status Numeric)");
 tx.executeSql("Create Table IF NOT EXISTS customer_supplier(p_id INTEGER PRIMARY KEY AUTOINCREMENT,name text,address text,mobile_no text,email_id text,status Numeric)");
+tx.executeSql("Create Table IF NOT EXISTS store_info(p_id INTEGER PRIMARY KEY AUTOINCREMENT,name text,address text,mobile_no text,email_id text,status Numeric)");
 //tx.executeSql("Insert into product values(1,'P1','Produt1',2,12.5)");
 tx.executeSql("Create Table IF NOT EXISTS retail_sale(id INTEGER PRIMARY KEY AUTOINCREMENT,bill_no INTEGER,date DATETIME DEFAULT CURRENT_TIMESTAMP ,status text)");
 tx.executeSql("Create Table IF NOT EXISTS retail_sale_detail(id INTEGER PRIMARY KEY AUTOINCREMENT,retail_sale_id INTEGER,product_id INTEGER ,quantity INTEGER ,price text ,status text ,FOREIGN KEY(retail_sale_id) REFERENCES retail_sale(id))");
@@ -108,7 +109,6 @@ function supp_edit(form,id)
     });
 	}); 
 }
-
 
 function delete_prod(p_id)
 {
@@ -224,6 +224,31 @@ database.transaction(function(tx) {
   }); 
 }
 
+function store_add_data(obj)
+{
+console.log(obj); 
+database.transaction(function(tx) {
+	if(obj.p_store_id === undefined ||  obj.p_store_id === null ||  obj.p_store_id === '')
+    tx.executeSql('INSERT INTO store_info(name,address,mobile_no,email_id,status) VALUES (?,?,?,?,2)', [obj.store_name,obj.store_address,obj.store_mobile,obj.store_email]);
+	else
+		console.log('Transaction update ');
+    tx.executeSql('update store_info set name=?, address=?, mobile_no=?, email_id=? where p_id=?', [obj.store_name,obj.store_address,obj.store_mobile,obj.store_email,obj.p_store_id]);
+  }, function(error) {
+    console.log('Transaction ERROR: ' + error.message);
+	$("#status_msg").html('<span id="error_message" class="error">Transaction ERROR:<b>' + error.message+'</b></span>');
+  }, function() {
+	  $(".status_msg").fadeIn().html('<span id="success_message" class="success"><b>Data saved successfully</b></span>');
+				setTimeout(function() {
+					$('.status_msg').fadeOut("slow");
+				}, 2000 );
+	 $('#add_store_form').trigger("reset");
+	 $('form#add_store_form input[type=hidden]').val('');
+	 if(obj.p_store_id !== undefined &&  obj.p_store_id !== null &&  obj.p_store_id !== '')
+	 $.mobile.navigate( "#settings" );
+  }); 
+}
+
+
 function sales_add_data(obj_arry)
 {
 	
@@ -279,16 +304,12 @@ function sales_add_data(obj_arry)
 			}(lastid) 
 			}
 			//});
-
-		
-
 	}, function(tx, error) {
       console.log('SELECT error: ' + error.message);
   	$("#status_msg").html('<span id="error_message" class="error">Transaction ERROR:<b>' + error.message+'</b></span>');
 	  $("div#divLoading").removeClass('show');
     });
 	});
-
 }
 
 function Prod_select(source)
@@ -377,3 +398,20 @@ function supp_select()
     });
   });
 }	
+
+function store_select()
+{
+	database.transaction(function(tx) {
+    tx.executeSql('SELECT * FROM store_info', [], function(tx, result) {
+		 $.each(result.rows,function(index){
+		var row = result.rows.item(index);
+		document.getElementById("p_store_id").value=row['p_id'];
+		document.getElementById("store_name").value=row['name'];
+		document.getElementById("store_address").value=row['address'];
+		document.getElementById("store_mobile").value=row['mobile_no'];
+		document.getElementById("store_email").value=row['email_id'];
+		console.log(row);
+		});
+	 });
+	});	
+}
